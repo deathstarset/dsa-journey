@@ -6,7 +6,7 @@ using std::cout;
 class Queue
 {
 private:
-  int rear, front;
+  int rear, front; // thoses keep track of the rear and front sides of the queue
   int arr[5];
 
 public:

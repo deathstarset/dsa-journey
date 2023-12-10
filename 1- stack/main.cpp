@@ -68,7 +68,10 @@ public:
     else
     {
       if (index >= 0 && index <= top)
+      {
+        cout << "value at index " << index << " is " << arr[index] << "\n";
         return arr[index];
+      }
       else
       {
         cout << "Index out of range!\n";
@@ -76,12 +79,13 @@ public:
       }
     }
   }
-  void change(int index, int value)
+  void change(int index, int item)
   {
     if (index >= 0 && index <= 4)
     {
-      arr[index] = value;
-      cout << "item changed at the index " << index << "\n";
+      int oldItem = arr[index];
+      arr[index] = item;
+      cout << "item changed at the index " << index << " - old item : " << oldItem << " - new item : " << arr[index] << "\n";
     }
     else
       cout << "index " << index << " out of range\n";
@@ -101,16 +105,16 @@ int main()
   int option, item, index;
   do
   {
-    cout << "What option would you like to perform? Select option number. Enter 0 to exit.\n";
-    cout << "1. Push\n";
-    cout << "2. Pop\n";
-    cout << "3. isEmpty()\n";
-    cout << "4. isFull()\n";
-    cout << "5. Peek\n";
-    cout << "6. Count\n";
-    cout << "7. change\n";
-    cout << "8. display\n";
-    cout << "9. clear screen\n";
+    cout << "What option would you like to perform? Select option number. Enter 0 to exit. 👇\n";
+    cout << "[1] => Push()\n";
+    cout << "[2] => Pop()\n";
+    cout << "[3] => isEmpty()\n";
+    cout << "[4] => isFull()\n";
+    cout << "[5] => Peek()\n";
+    cout << "[6] => Count()\n";
+    cout << "[7] => Change()\n";
+    cout << "[8] => Display()\n";
+    cout << "[9] => Clear Screen\n";
     cin >> option;
     switch (option)
     {
@@ -121,18 +125,23 @@ int main()
     case 1:
       cout << "Enter an item to push in the stack\n";
       cin >> item;
+      cout << "push() method is called - "
+           << "push value : " << item << "\n";
       s1.push(item);
       break;
     case 2:
-      cout << s1.pop() << "\n";
+      cout << "pop() method is called - ";
+      cout << " value popped :" << s1.pop() << "\n";
       break;
     case 3:
+      cout << "isEmpty() method is called\n";
       if (s1.isEmpty())
         cout << "the stack is empty\n";
       else
         cout << "the stack is not empty\n";
       break;
     case 4:
+      cout << "isFull() method is called\n";
       if (s1.isFull())
         cout << "the stack is full\n";
       else
@@ -141,9 +150,11 @@ int main()
     case 5:
       cout << "Enter the index you of the item you want to peek\n";
       cin >> index;
-      cout << s1.peek(index) << "\n";
+      cout << "peek() method was called - index to peek at : " << index << "\n";
+      s1.peek(index);
       break;
     case 6:
+      cout << "count() method was called\n";
       cout << "The number of element that are in the stack is " << s1.count() << "\n";
       break;
     case 7:
@@ -151,9 +162,11 @@ int main()
       cin >> index;
       cout << "Enter the new item you want to put instead\n";
       cin >> item;
+      cout << "change() method was called - index : " << index << " - new item : " << item << "\n";
       s1.change(index, item);
       break;
     case 8:
+      cout << "display() method was called\n";
       s1.display();
       break;
     case 9:
