@@ -1,16 +1,20 @@
-// implementing the queue data structure using arrays
+// this is an implementation of a circular queue using arrays
+/*
+- the main difference between it and a normal queue is that is allows adding new elements
+even after dequeueing
+*/
 #include <iostream>
 #include <cstdlib>
 using std::cin;
 using std::cout;
-class Queue
+class CircularQueue
 {
 private:
-  int rear, front; // thoses keep track of the rear and front sides of the queue
+  int rear, front;
   int arr[5];
 
 public:
-  Queue()
+  CircularQueue()
   {
     rear = front = -1;
     for (int i = 0; i < 5; i++)
@@ -18,76 +22,68 @@ public:
       arr[i] = 0;
     }
   }
-  bool isFull()
-  {
-    return rear == 4; // why is this : because the queue cannot accept any elements
-    // until the last element is dequeued that's why
-  }
   bool isEmpty()
   {
-    return rear == -1 && front == -1;
+    return rear == front && front == -1;
   }
-  void enqueue(int value)
+  bool isFull()
   {
-    if (isEmpty())
-    {
-      rear = front = 0;
-      arr[rear] = value;
-    }
-    else if (isFull())
+    return (rear + 1) % 5 == front;
+  }
+  void enqueue(int item)
+  {
+    if (isFull())
     {
       cout << "Queue is Full\n";
     }
+    else if (isEmpty())
+    {
+      rear = front = 0;
+      arr[front] = item;
+    }
     else
     {
-      rear++;
-      arr[rear] = value;
+      rear = (rear + 1) % 5;
+      arr[rear] = item;
     }
   }
-  int dequeue()
+  void dequeue()
   {
-    int value;
     if (isEmpty())
     {
-      cout << "Queue is Empty!\n";
-      return 0;
+      cout << "Queue is Empty\n";
     }
     else if (rear == front)
     {
-      value = arr[front];
       arr[front] = 0;
-      rear = front = -1;
-      return value;
+      front = rear = -1;
     }
     else
     {
-      value = arr[front];
       arr[front] = 0;
-      front++;
-      return value;
+      front = (front + 1) % 5;
     }
+  }
+  int count()
+  {
+    return rear + front - 1;
   }
   void display()
   {
     for (int i = 0; i < 5; i++)
     {
-      cout << arr[i] << " ";
+      cout << arr[i] << " \n";
     }
-    cout << "\n";
-  }
-  int count()
-  {
-    return isEmpty() ? 0 : rear - front + 1;
   }
 };
 int main()
 {
-  Queue q1;
-  int option, value;
-  cout << "This is a Live Implementation of a Queue\n";
+  CircularQueue queue;
+  int option, item;
+  cout << "This is a Live Implementation of a circular queue\n";
   do
   {
-    cout << "Please choose a number between options\n";
+    cout << "Please choose an option number - choose 0 to exit!\n";
     cout << "[1] => Enqueue()\n";
     cout << "[2] => Dequeue()\n";
     cout << "[3] => isFull()\n";
@@ -101,30 +97,30 @@ int main()
     case 0:
       break;
     case 1:
-      cout << "Please choose a value to enqueue\n";
-      cin >> value;
-      q1.enqueue(value);
+      cout << "Please choose an item to enqueue\n";
+      cin >> item;
+      queue.enqueue(item);
       break;
     case 2:
-      q1.dequeue();
+      queue.dequeue();
       break;
     case 3:
-      if (q1.isFull())
+      if (queue.isFull())
         cout << "Queue is Full\n";
       else
         cout << "Queue is not Full\n";
       break;
     case 4:
-      if (q1.isEmpty())
+      if (queue.isEmpty())
         cout << "Queue is Empty\n";
       else
         cout << "Queue is not Empty\n";
       break;
     case 5:
-      q1.display();
+      queue.display();
       break;
     case 6:
-      cout << "The number of elements in the Queue is " << q1.count() << "\n";
+      cout << "The number of elements in the Queue is " << queue.count() << "\n";
       break;
     case 7:
       system("clear");
