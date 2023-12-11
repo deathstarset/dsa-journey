@@ -12,11 +12,13 @@ class CircularQueue
 private:
   int rear, front;
   int arr[5];
+  int itemsCount;
 
 public:
   CircularQueue()
   {
     rear = front = -1;
+    itemsCount = 0;
     for (int i = 0; i < 5; i++)
     {
       arr[i] = 0;
@@ -40,11 +42,13 @@ public:
     {
       rear = front = 0;
       arr[front] = item;
+      itemsCount++;
     }
     else
     {
       rear = (rear + 1) % 5;
       arr[rear] = item;
+      itemsCount++;
     }
   }
   void dequeue()
@@ -57,23 +61,26 @@ public:
     {
       arr[front] = 0;
       front = rear = -1;
+      itemsCount--;
     }
     else
     {
       arr[front] = 0;
       front = (front + 1) % 5;
+      itemsCount--;
     }
   }
   int count()
   {
-    return rear + front - 1;
+    return itemsCount;
   }
   void display()
   {
     for (int i = 0; i < 5; i++)
     {
-      cout << arr[i] << " \n";
+      cout << arr[i] << " ";
     }
+    cout << "\n";
   }
 };
 int main()
