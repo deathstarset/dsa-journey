@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 using std::cin;
 using std::cout;
 
@@ -70,33 +71,26 @@ public:
     return head;
   }
 
-  // operations
+  // # operations
 
   // 1- checking if a node exist
   Node *nodeExist(int key)
   {
-    if (head == nullptr)
+    Node *temp = head;
+    if (temp == nullptr)
     {
-      return nullptr;
+      return temp;
     }
     else
     {
-      if (head->getKey() == key)
+      do
       {
-        return head;
-      }
-      else
-      {
-        Node *temp = head->getNext();
-        while (temp != head)
+        if (temp->getKey() == key)
         {
-          if (temp->getKey() == key)
-          {
-            return temp;
-          }
-          temp = temp->getNext();
+          return temp;
         }
-      }
+        temp = temp->getNext();
+      } while (temp != head);
     }
     return nullptr;
   }
@@ -116,7 +110,6 @@ public:
       }
       else
       {
-
         Node *temp = head;
         while (temp->getNext() != head)
         {
@@ -167,9 +160,7 @@ public:
     {
       Node *temp = nodeExist(key);
       if (temp == nullptr)
-      {
         cout << "No node exist with the key value : " << key << ".\n";
-      }
       else
       {
         if (temp->getNext() == head)
@@ -201,27 +192,24 @@ public:
     {
       if (temp == head)
       {
-        Node *temp = head;
-        while (temp->getNext() != head)
+        if (temp->getNext() == head)
         {
-          temp = temp->getNext();
+          head->setNext(nullptr);
+          head = nullptr;
+          cout << "Head Node Deleted - List Is Empty\n";
         }
-        Node *oldHead = head;
-        head = head->getNext();
-        temp->setNext(head);
-        oldHead->setNext(nullptr);
-        cout << "Head Node Deleted\n";
-      }
-      else if (temp->getNext() == head)
-      {
-        Node *prevNode = head;
-        while (prevNode->getNext() != temp)
+        else
         {
-          prevNode = prevNode->getNext();
+          while (temp->getNext() != head)
+          {
+            temp = temp->getNext();
+          }
+          Node *oldHead = head;
+          head = head->getNext();
+          temp->setNext(head);
+          oldHead->setNext(nullptr);
+          cout << "Head Node Deleted\n";
         }
-        prevNode->setNext(head);
-        temp->setNext(nullptr);
-        cout << "Node Deleted At Last\n";
       }
       else
       {
@@ -230,9 +218,15 @@ public:
         {
           prevNode = prevNode->getNext();
         }
+
+        if (temp->getNext() == head)
+          cout << "Node Deleted At Last\n";
+        else
+        {
+          cout << "Node Deleted In Between\n";
+        }
         prevNode->setNext(temp->getNext());
         temp->setNext(nullptr);
-        cout << "Node Deleted In Between\n";
       }
     }
   }
@@ -261,42 +255,96 @@ public:
     }
     else
     {
-      Node *temp = head->getNext();
-      if (temp == head)
+      Node *temp = head;
+      do
       {
-        cout << "Key -> " << temp->getKey() << " --- "
-             << "Data -> " << temp->getData() << "\n";
-      }
-      else
-      {
-        cout << "Key -> " << head->getKey() << " --- "
-             << "Data -> " << head->getData() << "\n";
-        while (temp != head)
-        {
-          cout << "Key -> " << temp->getKey() << " --- "
-               << "Data -> " << temp->getData() << "\n";
-          temp = temp->getNext();
-        }
-      }
+        cout << "key -> " << temp->getKey() << " --- data -> " << temp->getData() << "\n";
+        temp = temp->getNext();
+      } while (temp != head);
     }
   }
-}
+};
 
 ;
 int main()
 {
-  Node n1(1, 10);
-  Node n2(2, 20);
-  Node n3(3, 30);
-  Node n4(4, 40);
-  Node n5(5, 50);
+  int option, key, data, key2;
   CircularLinkedList list;
-  list.appendNode(&n1);
-  list.appendNode(&n2);
-  list.appendNode(&n3);
-  list.appendNode(&n4);
-  list.deleteNode(1);
-  list.updateNode(2, 44);
-  list.display();
+  do
+  {
+    cout << "\nWhat operations you want to perform? Select option number. Enter 0 to exit\n";
+    cout << "[1] => appendNode()\n";
+    cout << "[2] => prependNode()\n";
+    cout << "[3] => insertNodeAfter()\n";
+    cout << "[4] => deleteNode()\n";
+    cout << "[5] => updateNode()\n";
+    cout << "[6] => display()\n";
+    cout << "[7] => Clear Terminal\n";
+
+    cin >> option;
+    Node *node = new Node();
+
+    switch (option)
+    {
+    case 0:
+      cout << "Exiting Program....\n";
+      break;
+    case 1:
+      cout << "Append Node\n";
+      cout << "Enter Node Key\n";
+      cin >> key;
+      cout << "Enter Node Data\n";
+      cin >> data;
+      node->setKey(key);
+      node->setData(data);
+      list.appendNode(node);
+      break;
+    case 2:
+      cout << "Prepend Node\n";
+      cout << "Enter Node Key\n";
+      cin >> key;
+      cout << "Enter Node Data\n";
+      cin >> data;
+      node->setKey(key);
+      node->setData(data);
+      list.prependNode(node);
+      break;
+    case 3:
+      cout << "Insert Node After\n";
+      cout << "Enter Node Key You Want To Insert After\n";
+      cin >> key2;
+      cout << "Enter Node Key You Want To Add\n";
+      cin >> key;
+      cout << "Enter Node Data You Want To Add\n";
+      cin >> data;
+      node->setKey(key);
+      node->setData(data);
+      list.insertAfter(key2, node);
+      break;
+    case 4:
+      cout << "Delete Node\n";
+      cout << "Enter Node Key\n";
+      cin >> key;
+      list.deleteNode(key);
+      break;
+    case 5:
+      cout << "Update Node\n";
+      cout << "Enter Node Key\n";
+      cin >> key;
+      cout << "Enter Node New Data\n";
+      cin >> data;
+      list.updateNode(key, data);
+      break;
+    case 6:
+      cout << "Display List\n";
+      list.display();
+      break;
+    case 7:
+      system("clear");
+      break;
+    default:
+      cout << "Enter A Valid Option!\n";
+    }
+  } while (option != 0);
   return 0;
 }
